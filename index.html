@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CsvToJson - timof1996</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;"/>
+
+    <link href="https://unpkg.com/cirrus-ui" type="text/css" rel="stylesheet"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .header, .gradient {
+            /*background-image: linear-gradient(to right, #f0357c 0, #f154ff 25%, #777dff 50%, #497ce2 75%, #37bdde 100%);*/
+            background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+            background-size: 400% 400%;
+            -webkit-animation: Gradient 15s ease infinite;
+            -moz-animation: Gradient 15s ease infinite;
+            animation: Gradient 15s ease infinite;
+            color: #fff;
+        }
+        .header .nav-item,
+        .header .nav-item a{
+            color: #fff;
+        }
+
+        @-webkit-keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @-moz-keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        .pageWrapper {
+            padding-top: 60px;
+        }
+
+        .window {
+            width: 100%;
+            -webkit-border-radius: 8px;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            z-index: 0;
+            margin-top: 24px;
+        }
+
+        .window > .tool-bar {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 24px;
+            background: #c6c6c6;
+            border-color: #c6c6c6;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            z-index: 0;
+        }
+
+        .window > .tool-bar > span.ball {
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            height: 10px;
+            width: 10px;
+            position: absolute;
+            top: 7px;
+            left: 14px;
+            z-index: 1;
+        }
+
+        .window > .tool-bar > span.ball.ball-close {
+            background: #fc3d39;
+        }
+
+        .window > .tool-bar > span.ball.ball-minimize {
+            background: #fecb2e;
+            left: 30px;
+        }
+
+        .window > .tool-bar > span.ball.ball-maximize {
+            background: #53d769;
+            left: 46px;
+        }
+
+        .window > .frame {
+            background: rgba(0, 0, 0, 0.87);
+            padding: 18px 16px;
+            border-radius: 0 0 8px 8px;
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .window > .frame > .line {
+            margin-bottom: 8px;
+            display: flex;
+        }
+
+        .window > .frame > .line > .intro {
+            color: green;
+            margin-right: 8px;
+        }
+
+        .window > .frame > .line > .cmd {
+            margin-left: 8px;
+        }
+
+        .window > .frame > .line > .cmd.cursor {
+            width: 8px;
+            height: 14px;
+            position: relative;
+            background: transparent;
+            top: 6px;
+            left: 0;
+            display: flex;
+            -webkit-animation: Pulse 1s linear infinite;
+            -moz-animation: Pulse 1s linear infinite;
+            animation: Pulse 1s linear infinite;
+        }
+
+        @-webkit-keyframes Pulse {
+            0% {
+                background: transparent;
+            }
+            100% {
+                background: green;
+            }
+        }
+
+        @-moz-keyframes Pulse {
+            0% {
+                background: transparent;
+            }
+            100% {
+                background: green;
+            }
+        }
+
+        @keyframes Pulse {
+            0% {
+                background: transparent;
+            }
+            100% {
+                background: green;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header header-fixed unselectable header-animated">
+    <div class="header-brand">
+        <div class="nav-item no-hover">
+            <h6 class="title">CSV to JSON</h6>
+        </div>
+        <div class="nav-item nav-btn" id="header-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <div class="header-nav" id="header-menu">
+        <div class="nav-right">
+            <div class="nav-item text-center">
+                <a href="https://github.com/timof1996/CsvToJson" target="_blank">
+                    <span class="icon">
+                        <i class="fa fa-github" aria-hidden="true"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pageWrapper">
+    <div class="content">
+
+        <div class="window">
+            <div class="tool-bar">
+                <span class="ball ball-close"></span>
+                <span class="ball ball-minimize"></span>
+                <span class="ball ball-maximize"></span>
+            </div>
+            <div class="frame">
+                <div class="line">
+                    <span class="intro">timo : /CsvToJson/</span>
+                    <span class="cmd">mv file.csv CsvToJson/storage</span>
+                </div>
+                <div class="line">
+                    <span class="intro">timo : /CsvToJson/</span>
+                    <span class="cmd">python main.py -i file.csv</span>
+                </div>
+                <div class="line">
+                    <span class="intro">timo : /CsvToJson/</span>
+                    <span class="cmd">python main.py -i file.csv -o output_file.json</span>
+                </div>
+                <div class="line">
+                    <span class="intro">timo : /CsvToJson/</span>
+                    <span class="cmd cursor"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="level">
+                <div class="level-item col-6">
+                    <p>id;name;email<br>1;John Doe;john.doe@gmail.com<br>2;Max Smith;max.smith@gmail.com</p>
+                </div>
+                <div class="level-item col-6">
+                    <pre style="width: 100%;">
+                        <code class="html" data-lang="json">{
+    [
+        "id": "1",
+        "name": "John Doe",
+        "email": "john.doe@gmail.com"
+    ], [
+        "id": "2",
+        "name": "Max Smith",
+        "email": "max.smith@gmail.com"
+    ]
+}
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <h6>How to use</h6>
+        <p>Follow these steps to use the Python <i>csv to json</i> converter</p>
+        <ol>
+            <li>Clone the repository from git with:<br><code>git clone https://github.com/timof1996/CsvToJson.git</code></li>
+            <li>Place your csv file in the storage directory.</li>
+            <li>Run this command to run the script:<br><code>python main.py -i <i>your_csv_file</i>.csv</code></li>
+            <li>A new file get created in the /storage directory automatically.</li>
+            <li>Alternatively you can specify your output filename with:<br><code>python main.py -i <i>your_csv_file</i>.csv -o <i>output</i>.json</code></li>
+        </ol>
+
+    </div>
+</div>
+
+<footer>
+    <div class="content">
+        <p class="font-thin center">timof1996 &copy; 2018.</p>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Show dropdown when clicked
+        $('#header-btn').on('click', function (e) {
+            $('#header-menu').toggleClass('active');
+            $('.nav-btn').toggleClass('active');
+        });
+        // Hide menu after clicking menu item
+        $('.dropdown-menu li').on('click', function (e) {
+            $('#header-menu').removeClass('active');
+            $('.nav-btn').removeClass('active');
+        });
+    })
+</script>
+</body>
+</html>
